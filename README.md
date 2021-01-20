@@ -24,7 +24,7 @@ Copy `.env.example` to `.env`
 - Set `STATIC_ROOT=""` in `.env` for running back end and front end independently
 ### Back end
 ```bash
-$ manage.py runserver -p {your-favorite-port}
+$ python manage.py runserver -p {your-favorite-port}
 ```
 ### Front end
 ```bash
