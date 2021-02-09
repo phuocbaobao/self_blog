@@ -32,10 +32,10 @@ DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = ['localhost']
 
-if not os.getenv('STATIC_ROOT'):
+STATIC_ROOT = f"{BASE_DIR}{os.getenv('STATIC_DIR')}"
+
+if not os.getenv('STATIC_DIR'):
     STATIC_ROOT = None
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, '/static/self_blog/dist')
 
 static_app = []
 
@@ -47,8 +47,8 @@ if not STATIC_ROOT and DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
+    "whitenoise.runserver_nostatic",
     *static_app,
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -58,6 +58,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -71,7 +72,7 @@ ROOT_URLCONF = 'self_blog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [STATIC_ROOT] if STATIC_ROOT else [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,5 +127,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(STATIC_ROOT, 'static'),
+)

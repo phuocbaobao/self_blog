@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      PGDATA: /var/lib/postgres
+    env_file:
+      - .env
+    volumes:
+      - db:/var/lib/postgres
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "python setup.py build && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres
+
+
+volumes:
+  db:
