@@ -31,6 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS += os.getenv('ALLOWED_HOSTS', '').split(', ')
 
 STATIC_ROOT = f"{BASE_DIR}{os.getenv('STATIC_DIR')}"
 
