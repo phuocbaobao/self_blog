@@ -11,7 +11,7 @@ class Command(RunServerCommand):
         try:
             lock.acquire(timeout=1)
             try:
-                serve_fe = Popen(["yarn", "serve"], cwd="self_blog/static/self_blog")
+                serve_fe = Popen("yarn install & yarn serve", shell=True, cwd="self_blog/static/self_blog")
 
                 def release():
                     serve_fe.terminate()
